@@ -1,5 +1,5 @@
 ---
-status: drafted # intake | drafted | published | skipped
+status: published # intake | drafted | published | skipped
 article: "3d923954f1844a"
 ---
 
@@ -66,5 +66,6 @@ Xcode/署名環境が必要なため、この用途でも「スマホから指�
 - 2026-08-10: CEOがZenn上で記事を編集(見出しの具体化、問題/解決策の統合、重複説明の
   削除、実装詳細の深掘りカット、まとめの簡潔化など)。この編集内容をgitリポジトリ側の
   正式版として反映した。編集から得られた文章スタイルの方針はCLAUDE.mdの
-  「文章の書き方(スタイルガイド)」に記録済み。引き続き `published: false` のまま
-  CEOの公開指示を待つ。
+  「文章の書き方(スタイルガイド)」に記録済み。
+- 2026-08-10: CEOの指示により `published: true` にして公開。ステータスを
+  `published` に更新。今後は反応(いいね数など)を見ての改善サイクルに入る。
