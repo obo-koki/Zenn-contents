@@ -9,14 +9,49 @@ article: null
 わかりやすく説明する記事を書いてほしい。ただし、他にも同じような記事がすでにある場合は
 書くのをやめてほしい。
 
-## 調査のヒント
+## 背景資料(このコンセプトファイルだけで完結するよう、調査済みの内容を要約済み)
 
-- このマシン上に実装の手がかりがある: `~/linear-claude-bridge`, `~/linear-claude-workspace`,
-  `~/linear-ios-build-trigger`(README.md、server.py / webhook_server.py、launchdの
-  plistなど)。これらを読んで仕組みの概要(Linear Webhook受信 → Claude Codeの起動 →
-  実行結果の反映、といった全体の流れ)を把握したうえで、一般化して説明する記事にする。
-- `.env`、`tunnel_url.txt`、`state.json` 等に含まれるトークン・URL・個人情報・内部パスは
-  絶対に記事に書かない(CLAUDE.mdの注意事項を参照)。
+このエージェントはクラウド上で動きCEOのローカルマシンにはアクセスできないため、
+以下はCEOが手元の実装(`linear-claude-bridge` / `linear-claude-workspace` という
+2つのローカルリポジトリ)を実際に読んで要約した、事実ベースの技術サマリー。記事は
+この要約をもとに一般化して書いてよい(架空の詳細を付け足さないこと)。
+
+### 仕組みの全体像
+
+常駐サービス(Python製、ローカルMac上でlaunchdにより24時間稼働)が、Linearの
+Webhookを受け取れるようにCloudflareの一時トンネル(`cloudflared tunnel --url`)で
+自分自身をインターネットに公開している。流れは次の通り:
+
+1. スマホのLinearアプリで、特定のGoogleアカウントにIssueをアサインし、ステートを
+   「Todo」にする(スマホからの操作はこれだけ)。
+2. LinearがWebhookでその変化をCloudflareトンネル経由でMac上のサービスに通知する
+   (Webhookの署名を検証し、正規のLinear以外からのリクエストは拒否する)。
+3. サービスはIssueのステートを「In Progress」に変更し、Issueの本文をプロンプトとして
+   ローカルのClaude Code(VS Code拡張にバンドルされているnative binary)を
+   `--permission-mode bypassPermissions`(確認なしで実行)でheadless起動する。
+   作業ディレクトリは専用のワークスペース用リポジトリに固定されている。
+4. Claude Codeが作業を終えると、結果の要約をLinearのIssueにコメントとして書き戻し、
+   ステートを「In Review」に変更する。
+5. 別プロセスの監視役(watchdog、3分おきに外部から`/health`を疎通確認)が、
+   トンネル切断だけが起きてプロセス自体は生きている、というlaunchdでは検知できない
+   障害を検知し、自動でサービスを再起動する(再起動でトンネルURLとWebhook URLも
+   自動更新される)。
+
+関連する仕組みとして、Linearのコメントで特定コマンドを打つと、Mac上でモバイルアプリの
+ビルド・実機インストールまで自動で行う別サービスも存在する(iOSアプリのビルドはMac上の
+Xcode/署名環境が必要なため、この用途でも「スマホから指示→ローカルMacで実行」という
+同じパターンが使われている)。
+
+### 記事化にあたっての注意
+
+- **具体的な人物特定につながる情報(実際のメールアドレスなど)は書かない**。
+  「特定のGoogleアカウント」のように一般化する。
+- トンネルURL、Webhookのsigning secret、APIキーなど、実在するトークン・URLは
+  当然ながら一切登場しない(そもそもこの要約にも含まれていない)ので、記事にも書かない。
+- `bypassPermissions` で無人実行している以上、Issueをアサインできる人=ローカルで
+  コード実行できる人、というセキュリティ上のトレードオフがある。これは実際に元の
+  README内に明記されている注意点なので、記事でも「便利さとリスクのトレードオフ」
+  として正直に触れてよい。
 - 執筆前に、Zenn検索・Web検索で「Linear + Claude Code」「スマホから指示してAIに開発させる」
   等の類似記事が既に十分な数あるか確認すること。同種の記事が既にありオリジナリティが
   乏しいと判断したら、執筆を中止して `status: skipped` にし理由を `log` に書く。
