@@ -1,6 +1,6 @@
 ---
-status: intake # intake | published | skipped
-article: null
+status: drafted # intake | drafted | published | skipped
+article: "3d923954f1844a"
 ---
 
 # スマホのLinearから家のPCのClaudeに開発してもらう仕組み
@@ -57,4 +57,9 @@ Xcode/署名環境が必要なため、この用途でも「スマホから指�
   乏しいと判断したら、執筆を中止して `status: skipped` にし理由を `log` に書く。
 
 ## log
-(まだ何もしていない)
+- 2026-08-10: 類似記事(Linear+Claude Code、スマホから指示してAIに開発させる系)が
+  複数存在することを確認したが、watchdogによる外部疎通監視と自動復旧という切り口は
+  被っていないと判断し、その点に絞って記事を執筆(スラッグ: 3d923954f1844a)。
+  CEOの要望により、この回はpushのみ行いZenn上では非公開(published: false)のまま
+  保留する。CEOが `published: true` への変更を指示するまで、このコンセプトは
+  何もしない。

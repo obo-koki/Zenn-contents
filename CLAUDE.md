@@ -29,13 +29,17 @@ frontmatterの `status` に応じて次のいずれかを行う。
      articles配下のファイルを直接編集しcommit & push。
    - コンセプトファイルの `log` に、いつ何を変えたか(日付 + 要約)を追記する。
    - 明確な改善判断ができない場合は何もせず終了してよい(無理に変更を加えない)。
+3. `status: drafted` → 記事は書かれてpushもされているが、CEOが意図的に公開(Zenn上での
+   `published: true` 化)を保留している状態。何もしない。CEOが `status` を変更するまで
+   このコンセプトには触れない(通常は「人間の承認を待たない」運用だが、これは
+   CEOが個別に保留を指示した例外)。
 
 ## コンセプトファイルの形式 (`org/concepts/<slug>.md`)
 
 ```markdown
 ---
-status: intake # intake | published | skipped
-article: null  # 公開後は articles/ のスラッグ(例: "abcdef1234567")
+status: intake # intake | drafted | published | skipped
+article: null  # 記事作成後は articles/ のスラッグ(例: "abcdef1234567")
 ---
 
 # コンセプト名
