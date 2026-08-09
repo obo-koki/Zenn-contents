@@ -16,10 +16,12 @@
 エージェントは起動するたびに、自分が担当する `org/concepts/<slug>.md` を読み、
 frontmatterの `status` に応じて次のいずれかを行う。
 
-1. `status: intake` → 記事を1本執筆し `articles/` 配下に新規ファイルを作成
-   (`npx zenn new:article` でスラッグを生成)、`published: true` にしてcommit & push。
-   コンセプトファイルの `status` を `published` に更新し、`article` フィールドに
-   記事のスラッグを記録する。
+1. `status: intake` → まずWeb検索・Zenn検索で類似記事がすでに十分あるか確認する。
+   類似記事が既に存在し新規性が乏しいと判断した場合は執筆を中止し、`status` を
+   `skipped` にして理由を `log` に書く(記事は作らない)。問題なければ記事を1本執筆し
+   `articles/` 配下に新規ファイルを作成(`npx zenn new:article` でスラッグを生成)、
+   `published: true` にしてcommit & push。コンセプトファイルの `status` を `published`
+   に更新し、`article` フィールドに記事のスラッグを記録する。
 2. `status: published` → Zenn公開APIで反応を取得し、記事を改善すべきか判断する。
    - `https://zenn.dev/api/articles?username=obo_koki` (該当記事の `liked_count` /
      `comments_count` / `bookmarked_count` を確認)
@@ -32,7 +34,7 @@ frontmatterの `status` に応じて次のいずれかを行う。
 
 ```markdown
 ---
-status: intake # intake | published
+status: intake # intake | published | skipped
 article: null  # 公開後は articles/ のスラッグ(例: "abcdef1234567")
 ---
 
@@ -64,3 +66,6 @@ published: true
 - 記事は日本語で書く(このリポジトリの既存記事に合わせる)。
 - 内容に事実確認が必要な技術的主張を含める場合は、断定を避け根拠を示すか、
   検証可能な形で書く。
+- コンセプトの調査でこのマシン上の他のプロジェクトを参照する場合、`.env` やトークン、
+  内部URL、個人情報など秘匿情報は絶対に記事本文に書かない。仕組み・構成・技術選定の
+  説明にとどめる。
