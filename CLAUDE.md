@@ -98,8 +98,14 @@ LinearにIssueを作成し、CEOに通知する。
   使うと自分の操作として扱われ通知が飛ばないため、別アカウントのキーを使っている)、
   `LINEAR_TEAM_ID`、`LINEAR_ASSIGNEE_ID`(通知を受け取るCEOのユーザーID)。
 - GraphQL `issueCreate` ミューテーションで、`teamId: $LINEAR_TEAM_ID`、
-  `assigneeId: $LINEAR_ASSIGNEE_ID`、タイトルに記事名、説明に提案ファイルへのパスと
-  提案理由の要約を入れて作成する。
+  `assigneeId: $LINEAR_ASSIGNEE_ID`、タイトルに記事名、説明に提案理由の要約を入れて
+  作成する。
+- `obo-koki/Zenn-contents` はpublicリポジトリなので、説明には提案ファイルへの
+  **GitHub上の直接リンク**を必ず含める
+  (`https://github.com/obo-koki/Zenn-contents/blob/main/org/proposals/<ファイル名>`)。
+  publicリポジトリなのでログインなしでスマホのブラウザからも内容を確認できる。
+  push前にリンクを組み立てるのではなく、実際にpushが完了してファイルがmainブランチに
+  存在する状態になってからリンクを通知に含めること。
 - これらの値は絶対にログ・記事・コミットメッセージなど、このリポジトリに書き出さない
   (環境変数として使うだけにとどめる)。
 
