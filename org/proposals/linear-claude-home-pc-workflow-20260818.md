@@ -1,7 +1,7 @@
 ---
 concept: linear-claude-home-pc-workflow
 article: 3d923954f1844a
-status: pending
+status: approved
 created: 2026-08-18
 ---
 

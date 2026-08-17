@@ -74,3 +74,6 @@ Xcode/署名環境が必要なため、この用途でも「スマホから指�
   反映されておらず「よくある類似記事」に見えている可能性を根拠に、タイトル変更の
   改善提案を作成した(`org/proposals/linear-claude-home-pc-workflow-20260818.md`)。
   記事本体は未編集、CEOの承認待ち。
+- 2026-08-18: CEOがLinear(OBO-60)で提案を承認したため、タイトルを
+  「Linearにアサインするだけで動くClaude Code、launchdの盲点だけは自前のwatchdogで埋めた」
+  に変更してpush。提案ファイルのstatusを`approved`に更新。今後も反応を継続観測する。
